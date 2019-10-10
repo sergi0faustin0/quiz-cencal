@@ -1,3 +1,7 @@
+
+import java.awt.Color;
+import javax.swing.JOptionPane;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -15,7 +19,7 @@ public class MainMenu extends javax.swing.JFrame {
      */
     public MainMenu() {
         initComponents();
-        this.setSize(700,500);
+        this.setSize(700,540);
         this.setLocationRelativeTo(null);
     }
 
@@ -29,16 +33,16 @@ public class MainMenu extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        cbxCategories = new javax.swing.JComboBox<>();
+        cbxLanguages = new javax.swing.JComboBox<>();
         btnNext = new javax.swing.JButton();
-        cbxCategories1 = new javax.swing.JComboBox<>();
+        cbxCategories = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/quiz-time.png"))); // NOI18N
         jLabel1.setOpaque(true);
 
-        cbxCategories.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Idioma:", "Inglês", "Esperanto" }));
+        cbxLanguages.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Idioma:", "Inglês", "Esperanto" }));
 
         btnNext.setText("Jogar");
         btnNext.addActionListener(new java.awt.event.ActionListener() {
@@ -47,7 +51,7 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
 
-        cbxCategories1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tema:", "Animais", "Cores" }));
+        cbxCategories.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tema:", "Cores", "Animais", "Partes do Corpo" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -58,9 +62,9 @@ public class MainMenu extends javax.swing.JFrame {
                 .addGap(0, 11, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(31, 31, 31)
-                .addComponent(cbxCategories, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cbxLanguages, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(52, 52, 52)
-                .addComponent(cbxCategories1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cbxCategories, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnNext, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(49, 49, 49))
@@ -72,8 +76,8 @@ public class MainMenu extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNext, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbxCategories, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbxCategories1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbxLanguages, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbxCategories, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -81,9 +85,41 @@ public class MainMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
-        SecondaryMenu s = new SecondaryMenu();
-        s.setVisible(true);
-        this.setVisible(false);  
+
+        QuizCencal q = new QuizCencal();
+        
+        q.registos.clear();
+        q.category = cbxCategories.getSelectedIndex();
+        q.language = cbxLanguages.getSelectedIndex();
+        
+        System.out.println("iniciou o segundo form\nCategory: "+q.category+"\nLanguage: "+q.language);
+
+        if (q.category == 0){
+            cbxCategories.setBackground(Color.red);            
+            cbxLanguages.setBackground(Color.gray);    
+        }
+        else if (q.language == 0){
+            cbxLanguages.setBackground(Color.red);      
+            cbxCategories.setBackground(Color.gray);  
+        }
+
+        else{
+            LigaBD liga = new LigaBD();
+            boolean retorno = liga.pesquisa();
+
+            if (q.registos.size() < 11){
+                JOptionPane.showMessageDialog(null,"Não existem registos suficientes nesta categoria para poder jogar" ,"Alerta",JOptionPane.ERROR_MESSAGE);
+            } else {
+            
+               
+                SecondaryMenu s = new SecondaryMenu();
+                s.setVisible(true);
+                this.setVisible(false);                 
+            }       
+        }
+
+        
+        
     }//GEN-LAST:event_btnNextActionPerformed
 
     /**
@@ -124,7 +160,7 @@ public class MainMenu extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNext;
     private javax.swing.JComboBox<String> cbxCategories;
-    private javax.swing.JComboBox<String> cbxCategories1;
+    private javax.swing.JComboBox<String> cbxLanguages;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

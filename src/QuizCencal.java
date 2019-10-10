@@ -1,3 +1,7 @@
+
+import java.sql.Array;
+import java.util.ArrayList;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -10,7 +14,13 @@
  * @author sfaustino
  */
 public class QuizCencal {
-
+    //public static int x = 50;
+    public static String rcerta = "";
+    public static  int category ;
+    public static int language ;
+    //public static int registos[] = new int[x];
+    public static ArrayList<String> registos = new ArrayList<String>();
+    public static ArrayList<String> registos2 = new ArrayList<String>();
     /**
      * @param args the command line arguments
      */

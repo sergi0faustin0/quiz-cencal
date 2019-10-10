@@ -29,9 +29,9 @@
           </Group>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
-              <Component id="cbxCategories" min="-2" pref="168" max="-2" attributes="0"/>
+              <Component id="cbxLanguages" min="-2" pref="168" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
-              <Component id="cbxCategories1" min="-2" pref="168" max="-2" attributes="0"/>
+              <Component id="cbxCategories" min="-2" pref="168" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
               <Component id="btnNext" min="-2" pref="145" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
@@ -45,8 +45,8 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnNext" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
+                  <Component id="cbxLanguages" alignment="3" min="-2" pref="41" max="-2" attributes="0"/>
                   <Component id="cbxCategories" alignment="3" min="-2" pref="41" max="-2" attributes="0"/>
-                  <Component id="cbxCategories1" alignment="3" min="-2" pref="41" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
@@ -62,7 +62,7 @@
         <Property name="opaque" type="boolean" value="true"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JComboBox" name="cbxCategories">
+    <Component class="javax.swing.JComboBox" name="cbxLanguages">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="3">
@@ -84,13 +84,14 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNextActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JComboBox" name="cbxCategories1">
+    <Component class="javax.swing.JComboBox" name="cbxCategories">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="3">
+          <StringArray count="4">
             <StringItem index="0" value="Tema:"/>
-            <StringItem index="1" value="Animais"/>
-            <StringItem index="2" value="Cores"/>
+            <StringItem index="1" value="Cores"/>
+            <StringItem index="2" value="Animais"/>
+            <StringItem index="3" value="Partes do Corpo"/>
           </StringArray>
         </Property>
       </Properties>
