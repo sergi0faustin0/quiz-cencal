@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author sfaustino
+ * @author aduarte
  */
 public class SecondaryMenu extends javax.swing.JFrame {
 
@@ -39,7 +39,7 @@ public class SecondaryMenu extends javax.swing.JFrame {
         
         
         
-        String caminho = "C:\\Users\\sfaustino\\Documents\\NetBeansProjects\\quiz-cencal\\src\\media\\"; 
+        String caminho = "C:\\Users\\aduarte\\Documents\\NetBeansProjects\\quiz-cencal\\src\\media\\"; 
         System.out.println("foto: "+caminho);
         
         if (q.category == 1)
