@@ -1,1 +1,9 @@
 /dist/
+/build/
+/Quiz_Cencal/AudioTest/build/
+/Quiz_Cencal/AudioTest/dist/
+/Quiz_Cencal/AudioTest/nbproject/private/
+/Quiz_Cencal-audio-luna/AudioTest/build/
+/Quiz_Cencal-audio-luna/AudioTest/dist/
+/Quiz_Cencal-audio-luna/AudioTest/nbproject/private/
+/nbproject/private/
