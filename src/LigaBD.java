@@ -67,7 +67,9 @@ public class LigaBD {
                 }  
             
             }                
-            //System.out.println("lista de palavras -"+q.registos);
+            System.out.println("lista de palavras registos: "+q.registos);
+            System.out.println("lista de palavras registos2: "+q.registos2);
+
             conexao.close();
                     return true;    
             } catch (Exception ex) {
