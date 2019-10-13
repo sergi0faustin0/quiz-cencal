@@ -52,7 +52,7 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
 
-        cbxCategories.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tema:", "Cores", "Animais", "Partes do Corpo" }));
+        cbxCategories.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tema:", "Cores", "Animais", "Partes do Corpo", "Frutos" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

@@ -88,11 +88,12 @@
     <Component class="javax.swing.JComboBox" name="cbxCategories">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="4">
+          <StringArray count="5">
             <StringItem index="0" value="Tema:"/>
             <StringItem index="1" value="Cores"/>
             <StringItem index="2" value="Animais"/>
             <StringItem index="3" value="Partes do Corpo"/>
+            <StringItem index="4" value="Frutos"/>
           </StringArray>
         </Property>
       </Properties>

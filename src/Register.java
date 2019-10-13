@@ -18,7 +18,7 @@ public class Register extends javax.swing.JFrame {
         this.setSize(700,540);
         this.setLocationRelativeTo(null);
         
-        q.score = 8;
+        //q.score = 8;
         lblTotalRonda.setText(q.score+" Pts");
     }
 
@@ -33,7 +33,7 @@ public class Register extends javax.swing.JFrame {
 
         lblTotal = new javax.swing.JLabel();
         lblNome = new javax.swing.JLabel();
-        txtNome = new javax.swing.JTextField();
+        txtPlayer = new javax.swing.JTextField();
         btnRegistar = new javax.swing.JButton();
         lblTotalRonda = new javax.swing.JLabel();
 
@@ -47,8 +47,8 @@ public class Register extends javax.swing.JFrame {
         lblNome.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblNome.setText("Name:");
 
-        txtNome.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        txtNome.setText("Cristiano Ronaldo");
+        txtPlayer.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txtPlayer.setText("Cristiano Ronaldo");
 
         btnRegistar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnRegistar.setText("Save");
@@ -81,7 +81,7 @@ public class Register extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lblNome, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(9, 9, 9)
-                                .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(txtPlayer, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(110, 110, 110))
         );
         layout.setVerticalGroup(
@@ -96,7 +96,7 @@ public class Register extends javax.swing.JFrame {
                     .addComponent(lblNome, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(26, 26, 26)
-                        .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtPlayer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(21, 21, 21)
                 .addComponent(btnRegistar)
                 .addContainerGap())
@@ -106,7 +106,12 @@ public class Register extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegistarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistarActionPerformed
-    
+        LigaBD liga = new LigaBD();
+        boolean retorno = liga.player(txtPlayer.getText(),q.score);
+        q.score=0;
+        SecondaryMenu s = new SecondaryMenu();
+        s.setVisible(true);
+        this.setVisible(false);          
         
     }//GEN-LAST:event_btnRegistarActionPerformed
 
@@ -150,6 +155,6 @@ public class Register extends javax.swing.JFrame {
     private javax.swing.JLabel lblNome;
     private javax.swing.JLabel lblTotal;
     private javax.swing.JLabel lblTotalRonda;
-    private javax.swing.JTextField txtNome;
+    private javax.swing.JTextField txtPlayer;
     // End of variables declaration//GEN-END:variables
 }

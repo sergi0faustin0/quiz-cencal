@@ -27,6 +27,7 @@ public class QuizCencal {
     //public static int registos[] = new int[x];
     public static ArrayList<String> registos = new ArrayList<String>();
     public static ArrayList<String> registos2 = new ArrayList<String>();
+    public static ArrayList<String> top5 = new ArrayList<String>();
     /**
      * @param args the command line arguments
      */

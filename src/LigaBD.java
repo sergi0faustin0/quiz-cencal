@@ -22,18 +22,15 @@ public class LigaBD {
                 Class.forName("com.mysql.cj.jdbc.Driver").newInstance();            
                 conexao = DriverManager.getConnection("jdbc:mysql://localhost/"+bd+"?useTimezone=true&serverTimezone=UTC&" +"user=root&password=");
                 System.out.println("Conectado!");
-                String query="INSERT INTO movimento (data,valores, clientes_idclientes, tipoMovimento_idtipoMovimento, contaExterna) VALUES (now(),?,?,?,?)";
+
+                String query="INSERT INTO `player` (`id`, `name`, `score`) VALUES (NULL,?,?)";
                 System.out.println(query);
                 ps=conexao.prepareStatement(query);
-                //ps.setString(1, ");
-                ps.setFloat(1, quantia);
-                ps.setInt(2, idCliente);
-                ps.setInt(3, tipo);
-                ps.setInt(4, contaExterna);
-
+                ps.setString(1, player);
+                ps.setInt(2, score);
                 ps.executeUpdate();    
                 conexao.close();
-                    return true;    
+                return true;    
             } catch (Exception ex) {
                 ex.printStackTrace();
                 System.out.println("Nada feito!");   
@@ -85,5 +82,39 @@ public class LigaBD {
      return false;       
     }    
     
+    public boolean top5(){
+        String username;
+        String senha;
+        QuizCencal q = new QuizCencal();
+       Connection conexao;
+        PreparedStatement ps=null;
+	ResultSet rs=null;            
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver").newInstance();            
+                conexao = DriverManager.getConnection("jdbc:mysql://localhost/"+bd+"?useTimezone=true&serverTimezone=UTC&" +"user=root&password=");
+                //System.out.println("Conectado!");
+                
+                String query="SELECT * FROM `player` order by score DESC, date DESC";
+                //System.out.println(query);
+                ps=conexao.prepareStatement(query);
+            rs=ps.executeQuery(); 
+            //q.top5.clear();
+            while(rs.next()){
+                //System.out.println("entrou no while!\n");
+                if (!rs.getString("name").equals("")){
+                    q.top5.add(rs.getString("score")+" -> "+rs.getString("name"));
+                    //System.out.println("q.top: "+q.top); 
+                }  
+            
+            }                
+            conexao.close();
+                    return true;    
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                System.out.println("Nada feito!");   
+            }
+     return false;       
+    }    
+        
  }
     

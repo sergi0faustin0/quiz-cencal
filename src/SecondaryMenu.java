@@ -22,6 +22,10 @@ import javax.swing.border.Border;
 
 
 public class SecondaryMenu extends javax.swing.JFrame {
+        long start = System.currentTimeMillis();
+        int timeElapsed;
+        
+        LigaBD liga = new LigaBD();
         int[] posicoes = { 0, 1, 2, 3, 4, 5 };
         QuizCencal q = new QuizCencal();
         
@@ -84,16 +88,24 @@ public class SecondaryMenu extends javax.swing.JFrame {
                 q.score=q.score+1;
             q.errada = false;  
             if (q.slide > 10){
-                JOptionPane.showMessageDialog(null,"Total desta Ronda: "+q.score+" Pts","Alerta",JOptionPane.INFORMATION_MESSAGE);
+                timeElapsed = (int)Math.round((System.currentTimeMillis()-start)/100);
+                System.out.println("timeElapsed: "+timeElapsed);
+                if (timeElapsed < 21)
+                    q.score=q.score+20-timeElapsed;
+                    
+                //JOptionPane.showMessageDialog(null,"Total desta Ronda: "+q.score+" Pts","Alerta",JOptionPane.INFORMATION_MESSAGE);
                 q.ronda++;                
                 lblRonda.setText("Ronda: "+q.ronda);
                 q.slide = 1;  
-                q.score=0;
+                Register r = new Register();
+                r.setVisible(true);
+                this.setVisible(false);  
             }
-
+            top5();
             lblSlides.setText("Slide "+q.slide+" de 10");
   
             lblScore.setText("Score: "+q.score+" Pts");
+            start = System.currentTimeMillis();
             ronda();
             return true;
          }
@@ -138,8 +150,10 @@ public class SecondaryMenu extends javax.swing.JFrame {
             cat = "colors\\";
         else if (q.category == 2)
             cat = "animals\\";
+        else if (q.category == 3)
+            cat = "body\\";
         else 
-            cat = "body\\";            
+            cat = "fruits\\";            
 
         
         btn1.setIcon(new ImageIcon(caminho+cat+foto1+".jpg"));
@@ -178,13 +192,32 @@ public class SecondaryMenu extends javax.swing.JFrame {
        
     }
     
+    public void top5(){
+        liga.top5();
+ 
+        if (!q.top5.get(0).isEmpty())
+            lbltop1.setText(q.top5.get(0));
+        if (!q.top5.get(1).isEmpty())
+            lbltop2.setText(q.top5.get(1));
+        if (!q.top5.get(2).isEmpty())
+            lbltop3.setText(q.top5.get(2));
+        if (!q.top5.get(3).isEmpty())
+            lbltop4.setText(q.top5.get(3));
+        if (!q.top5.get(4).isEmpty())
+            lbltop5.setText(q.top5.get(4));
+
+
+
+    }    
+    
     public SecondaryMenu() {
         initComponents();
         this.setSize(700,540);
         this.setLocationRelativeTo(null);
-        LigaBD liga = new LigaBD();
+
         //boolean retorno = liga.pesquisa();
         ronda();
+        top5();
      }
 
     @SuppressWarnings("unchecked")
@@ -195,6 +228,11 @@ public class SecondaryMenu extends javax.swing.JFrame {
         lblRonda = new javax.swing.JLabel();
         lblSlides = new javax.swing.JLabel();
         lblScore = new javax.swing.JLabel();
+        lbltop1 = new javax.swing.JLabel();
+        lbltop2 = new javax.swing.JLabel();
+        lbltop3 = new javax.swing.JLabel();
+        lbltop4 = new javax.swing.JLabel();
+        lbltop5 = new javax.swing.JLabel();
         btnMenu = new javax.swing.JButton();
         btn6 = new javax.swing.JButton();
         btn1 = new javax.swing.JButton();
@@ -207,6 +245,7 @@ public class SecondaryMenu extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
         setResizable(false);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -216,6 +255,16 @@ public class SecondaryMenu extends javax.swing.JFrame {
 
         lblScore.setText("Score");
 
+        lbltop1.setText("11 pts -> Luna");
+
+        lbltop2.setText("11 pts -> Luna");
+
+        lbltop3.setText("11 pts -> Luna");
+
+        lbltop4.setText("11 pts -> Luna");
+
+        lbltop5.setText("11 pts -> Luna");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -223,14 +272,22 @@ public class SecondaryMenu extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(72, 72, 72)
+                        .addGap(87, 87, 87)
                         .addComponent(lblSlides))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(81, 81, 81)
+                        .addGap(96, 96, 96)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblScore)
-                            .addComponent(lblRonda))))
-                .addContainerGap(78, Short.MAX_VALUE))
+                            .addComponent(lblRonda)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbltop5)
+                            .addComponent(lbltop2)
+                            .addComponent(lbltop1)
+                            .addComponent(lbltop3)
+                            .addComponent(lbltop4))))
+                .addContainerGap(82, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -241,8 +298,20 @@ public class SecondaryMenu extends javax.swing.JFrame {
                 .addComponent(lblRonda, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblSlides, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(222, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lbltop1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lbltop2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lbltop3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lbltop4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lbltop5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(42, 42, 42))
         );
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 30, -1, -1));
 
         btnMenu.setText("Menu");
         btnMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -250,42 +319,49 @@ public class SecondaryMenu extends javax.swing.JFrame {
                 btnMenuActionPerformed(evt);
             }
         });
+        getContentPane().add(btnMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(481, 395, 132, 73));
 
         btn6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn6ActionPerformed(evt);
             }
         });
+        getContentPane().add(btn6, new org.netbeans.lib.awtextra.AbsoluteConstraints(205, 328, 140, 140));
 
         btn1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn1ActionPerformed(evt);
             }
         });
+        getContentPane().add(btn1, new org.netbeans.lib.awtextra.AbsoluteConstraints(44, 30, 140, 140));
 
         btn2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn2ActionPerformed(evt);
             }
         });
+        getContentPane().add(btn2, new org.netbeans.lib.awtextra.AbsoluteConstraints(202, 30, 140, 140));
 
         btn3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn3ActionPerformed(evt);
             }
         });
+        getContentPane().add(btn3, new org.netbeans.lib.awtextra.AbsoluteConstraints(44, 176, 140, 140));
 
         btn4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn4ActionPerformed(evt);
             }
         });
+        getContentPane().add(btn4, new org.netbeans.lib.awtextra.AbsoluteConstraints(202, 176, 140, 140));
 
         btn5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn5ActionPerformed(evt);
             }
         });
+        getContentPane().add(btn5, new org.netbeans.lib.awtextra.AbsoluteConstraints(47, 328, 140, 140));
 
         btnSpeaker.setIcon(new javax.swing.ImageIcon("C:\\Users\\cistus\\Downloads\\speaker.jpg")); // NOI18N
         btnSpeaker.addActionListener(new java.awt.event.ActionListener() {
@@ -293,63 +369,7 @@ public class SecondaryMenu extends javax.swing.JFrame {
                 btnSpeakerActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(44, 44, 44)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btn5, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btn6, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btn3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btn4, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btn2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(3, 3, 3)))
-                .addGap(55, 55, 55)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnSpeaker, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(200, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btn2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btn3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btn4, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btn6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btn5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnSpeaker, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
+        getContentPane().add(btnSpeaker, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 395, 71, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -468,5 +488,10 @@ public class SecondaryMenu extends javax.swing.JFrame {
     private javax.swing.JLabel lblRonda;
     private javax.swing.JLabel lblScore;
     private javax.swing.JLabel lblSlides;
+    private javax.swing.JLabel lbltop1;
+    private javax.swing.JLabel lbltop2;
+    private javax.swing.JLabel lbltop3;
+    private javax.swing.JLabel lbltop4;
+    private javax.swing.JLabel lbltop5;
     // End of variables declaration//GEN-END:variables
 }
