@@ -15,6 +15,8 @@ import java.util.ArrayList;
  */
 public class QuizCencal {
     //public static int x = 50;
+    public static boolean errada = false;    
+    public static int score = 0;
     public static int slide = 1;
     public static int ronda = 1;
     public static String rcerta = "";

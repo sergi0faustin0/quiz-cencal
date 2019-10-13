@@ -38,6 +38,7 @@ public class MainMenu extends javax.swing.JFrame {
         cbxCategories = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/quiz-time.png"))); // NOI18N
         jLabel1.setOpaque(true);
@@ -93,7 +94,7 @@ public class MainMenu extends javax.swing.JFrame {
         q.category = cbxCategories.getSelectedIndex();
         q.language = cbxLanguages.getSelectedIndex();
         
-        System.out.println("iniciou o segundo form\nCategory: "+q.category+"\nLanguage: "+q.language);
+        //System.out.println("iniciou o segundo form\nCategory: "+q.category+"\nLanguage: "+q.language);
 
         if (q.category == 0){
             cbxCategories.setBackground(Color.red);            

@@ -14,11 +14,6 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
  *
@@ -37,8 +32,6 @@ public class SecondaryMenu extends javax.swing.JFrame {
         
         //caminho para testar   
         String caminho = "..\\quiz-cencal\\src\\media\\";         
-        //caminho para o jar
-        //String caminho = "..\\src\\media\\";       
         
         //define Categoria
         String cat; 
@@ -53,7 +46,7 @@ public class SecondaryMenu extends javax.swing.JFrame {
         baralhaArray(posicoes);
         distribuir();
         lblSlides.setText("Slide "+q.slide+" de 10");
-        som();        
+        som();              
     }
     
   // Implementing Fisher–Yates shuffle
@@ -81,48 +74,56 @@ public class SecondaryMenu extends javax.swing.JFrame {
      }
     
      public boolean RespostaCerta(String resp) {
+        System.out.println("resp: "+resp);
+        System.out.println("q.rcerta: "+q.rcerta);
+        System.out.println("q.rcerta2: "+q.rcerta2);
 
-        System.out.println("estou aqui");  
-        System.out.println("q.rcerta: "+q.rcerta+"\nq.rcerta2: "+q.rcerta2+"\nresp: "+resp);
          if (q.rcerta == resp || q.rcerta2 == resp){
             q.slide++;
+            if (q.errada == false)
+                q.score=q.score+1;
+            q.errada = false;  
             if (q.slide > 10){
+                JOptionPane.showMessageDialog(null,"Total desta Ronda: "+q.score+" Pts","Alerta",JOptionPane.INFORMATION_MESSAGE);
                 q.ronda++;                
                 lblRonda.setText("Ronda: "+q.ronda);
-                q.slide = 1;                
+                q.slide = 1;  
+                q.score=0;
             }
 
             lblSlides.setText("Slide "+q.slide+" de 10");
+  
+            lblScore.setText("Score: "+q.score+" Pts");
             ronda();
             return true;
          }
-         else
-             return false;             
+         else{
+            q.errada = true;
+            return false;
+         }             
      }
      
     public void som(){
-
-
         if (q.language == 1)
             idioma="english";
         else
             idioma="esperanto";   
-        System.out.println("som1: "+q.rcerta);        
-        String uriString = new File(caminho+cat+idioma+"\\"+q.rcerta+".mp3").toURI().toString();
+        String path = caminho+cat+idioma+"\\"+q.rcerta+".mp3";
+        //System.out.println("audio path: "+path); 
+        String uriString = new File(path).toURI().toString();
         Media pick = new Media(uriString);        
         MediaPlayer player = new MediaPlayer(pick); 
         player.play();        
     }     
+    
     public void distribuir(){
-
-
         String foto1 = q.registos.get(posicoes[0]);
         String foto2 = q.registos.get(posicoes[1]);
         String foto3 = q.registos.get(posicoes[2]);
         String foto4 = q.registos.get(posicoes[3]);
         String foto5 = q.registos.get(posicoes[4]);
         String foto6 = q.registos.get(posicoes[5]);
-        
+
         if (q.language == 2){
             foto1 = q.registos2.get(posicoes[0]);
             foto2 = q.registos2.get(posicoes[1]);
@@ -133,8 +134,6 @@ public class SecondaryMenu extends javax.swing.JFrame {
         }
         
 
-        System.out.println("q.registos2: "+q.registos2);
-       
         if (q.category == 1)
             cat = "colors\\";
         else if (q.category == 2)
@@ -156,40 +155,35 @@ public class SecondaryMenu extends javax.swing.JFrame {
         btn4.setText(q.registos.get(posicoes[3]));
         btn5.setText(q.registos.get(posicoes[4]));
         btn6.setText(q.registos.get(posicoes[5]));
-/*
-System.out.println("----------- lbl1: "+lbl1.getText());
-System.out.println("----------- lbl2: "+lbl2.getText());
-System.out.println("----------- lbl3: "+lbl3.getText());
-System.out.println("----------- lbl4: "+lbl4.getText());
-System.out.println("----------- lbl5: "+lbl5.getText());
-System.out.println("----------- lbl6: "+lbl6.getText());
-   */     
-System.out.println(caminho+cat+foto6+".jpg");
-          
+
+        if (q.language == 2){
+            btn1.setText(q.registos2.get(posicoes[0]));
+            btn2.setText(q.registos2.get(posicoes[1]));
+            btn3.setText(q.registos2.get(posicoes[2]));
+            btn4.setText(q.registos2.get(posicoes[3]));
+            btn5.setText(q.registos2.get(posicoes[4]));
+            btn6.setText(q.registos2.get(posicoes[5]));           
+        }        
         
         q.rcerta = q.registos.get(0);
-        if (q.language == 2)
+
+        if (q.language == 2){
             q.rcerta2 = q.registos2.get(0);        
+            q.registos2.remove(0);
+            q.registos2.add(q.rcerta2);              
+        }
+        
         q.registos.remove(0);
         q.registos.add(q.rcerta);
-        System.out.println(q.registos);
-        System.out.println("resposta certa: "+q.rcerta);
-        
+       
     }
     
     public SecondaryMenu() {
         initComponents();
         this.setSize(700,540);
         this.setLocationRelativeTo(null);
-        
         LigaBD liga = new LigaBD();
-        //System.out.println("iniciou o segundo form\nCategory: "+q.category+"\nLanguage: "+q.language);
-        
-        boolean retorno = liga.pesquisa();
-        System.out.println("retorno -"+retorno);
-                
-        System.out.println(q.registos);
-        System.out.println("numero de registos: "+q.registos.size());  
+        //boolean retorno = liga.pesquisa();
         ronda();
      }
 
@@ -200,6 +194,7 @@ System.out.println(caminho+cat+foto6+".jpg");
         jPanel1 = new javax.swing.JPanel();
         lblRonda = new javax.swing.JLabel();
         lblSlides = new javax.swing.JLabel();
+        lblScore = new javax.swing.JLabel();
         btnMenu = new javax.swing.JButton();
         btn6 = new javax.swing.JButton();
         btn1 = new javax.swing.JButton();
@@ -211,6 +206,7 @@ System.out.println(caminho+cat+foto6+".jpg");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
+        setResizable(false);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -218,25 +214,34 @@ System.out.println(caminho+cat+foto6+".jpg");
 
         lblSlides.setText("Slide 1 de 10");
 
+        lblScore.setText("Score");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(49, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblSlides)
-                    .addComponent(lblRonda))
-                .addGap(101, 101, 101))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(72, 72, 72)
+                        .addComponent(lblSlides))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(81, 81, 81)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblScore)
+                            .addComponent(lblRonda))))
+                .addContainerGap(78, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(lblScore, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblRonda, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblSlides, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(238, Short.MAX_VALUE))
+                .addContainerGap(222, Short.MAX_VALUE))
         );
 
         btnMenu.setText("Menu");
@@ -327,16 +332,16 @@ System.out.println(caminho+cat+foto6+".jpg");
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btn2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(36, 36, 36)
+                            .addComponent(btn2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btn3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btn4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btn3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn4, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btn6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btn5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btn6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(28, 28, 28)
@@ -461,6 +466,7 @@ System.out.println(caminho+cat+foto6+".jpg");
     private javax.swing.JButton btnSpeaker;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblRonda;
+    private javax.swing.JLabel lblScore;
     private javax.swing.JLabel lblSlides;
     // End of variables declaration//GEN-END:variables
 }

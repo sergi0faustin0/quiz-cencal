@@ -13,8 +13,8 @@ public class LigaBD {
     String user = "root";
     String password = "";    
     
-    
-    public boolean regista(String msg){
+    public boolean player(String player, int score){
+
        Connection conexao;
         PreparedStatement ps=null;
 	ResultSet rs=null;            
@@ -22,20 +22,26 @@ public class LigaBD {
                 Class.forName("com.mysql.cj.jdbc.Driver").newInstance();            
                 conexao = DriverManager.getConnection("jdbc:mysql://localhost/"+bd+"?useTimezone=true&serverTimezone=UTC&" +"user=root&password=");
                 System.out.println("Conectado!");
-                String query=msg;
+                String query="INSERT INTO movimento (data,valores, clientes_idclientes, tipoMovimento_idtipoMovimento, contaExterna) VALUES (now(),?,?,?,?)";
                 System.out.println(query);
                 ps=conexao.prepareStatement(query);
+                //ps.setString(1, ");
+                ps.setFloat(1, quantia);
+                ps.setInt(2, idCliente);
+                ps.setInt(3, tipo);
+                ps.setInt(4, contaExterna);
+
                 ps.executeUpdate();    
                 conexao.close();
-                return true;
+                    return true;    
             } catch (Exception ex) {
                 ex.printStackTrace();
                 System.out.println("Nada feito!");   
-
-            }           
-        return false;
-    }
-
+            }
+     return false;       
+    }    
+    
+    
     public boolean pesquisa(){
         String username;
         String senha;
@@ -46,10 +52,10 @@ public class LigaBD {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver").newInstance();            
                 conexao = DriverManager.getConnection("jdbc:mysql://localhost/"+bd+"?useTimezone=true&serverTimezone=UTC&" +"user=root&password=");
-                System.out.println("Conectado!");
+                //System.out.println("Conectado!");
                 
                 String query="SELECT * FROM `dici` WHERE `categoryId`='"+q.category+"' order by rand()";
-                System.out.println(query);
+                //System.out.println(query);
                 ps=conexao.prepareStatement(query);
             rs=ps.executeQuery(); 
 
@@ -67,8 +73,8 @@ public class LigaBD {
                 }  
             
             }                
-            System.out.println("lista de palavras registos: "+q.registos);
-            System.out.println("lista de palavras registos2: "+q.registos2);
+            //System.out.println("lista de palavras registos: "+q.registos);
+            //System.out.println("lista de palavras registos2: "+q.registos2);
 
             conexao.close();
                     return true;    
