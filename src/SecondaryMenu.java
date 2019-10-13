@@ -1,10 +1,18 @@
 
+import java.awt.Color;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -14,56 +22,99 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author sfaustino
+ * @authors luna, aduarte e sfaustino
  */
 
 
 public class SecondaryMenu extends javax.swing.JFrame {
         int[] posicoes = { 0, 1, 2, 3, 4, 5 };
         QuizCencal q = new QuizCencal();
-    /**
-     * Creates new form SecondaryMenu
-     */
-    public void posicao(){
-
-
-        shuffleArray(posicoes);
-        for (int i = 0; i < posicoes.length; i++)
-        {
-          System.out.print(posicoes[i] + " ");
-        }
-        System.out.println();
+        
+        //define cor das bordas
+        Border borderc = BorderFactory.createLineBorder(Color.GREEN, 5);      
+        Border bordere = BorderFactory.createLineBorder(Color.RED, 5);      
+        Border bordereset = BorderFactory.createLineBorder(Color.GRAY, 0); 
+        
+        //caminho para testar   
+        String caminho = "..\\quiz-cencal\\src\\media\\";         
+        //caminho para o jar
+        //String caminho = "..\\src\\media\\";       
+        
+        //define Categoria
+        String cat; 
+        
+        //define idioma
+        String idioma;
+        
+        // linha necessária para o som funcionar
+        final JFXPanel fxPanel = new JFXPanel();
+        
+    public void ronda(){
+        baralhaArray(posicoes);
+        distribuir();
+        lblSlides.setText("Slide "+q.slide+" de 10");
+        som();        
     }
-  // Implementing Fisher–Yates shuffle
-  static void shuffleArray(int[] ar)
-  {
-    // If running on Java 6 or older, use `new Random()` on RHS here
-    Random rnd = ThreadLocalRandom.current();
-    for (int i = ar.length - 1; i > 0; i--)
-    {
-      int index = rnd.nextInt(i + 1);
-      // Simple swap
-      int a = ar[index];
-      ar[index] = ar[i];
-      ar[i] = a;
-    }
-  }
     
-     public void RespostaCerta(String resp) {
+  // Implementing Fisher–Yates shuffle
+    static void baralhaArray(int[] ar){
+        // If running on Java 6 or older, use `new Random()` on RHS here
+        Random rnd = ThreadLocalRandom.current();
+        for (int i = ar.length - 1; i > 0; i--){
+          int index = rnd.nextInt(i + 1);
+          // Simple swap
+          int a = ar[index];
+          ar[index] = ar[i];
+          ar[i] = a;
+        }
+    }
 
-         if (q.rcerta == resp)
-            JOptionPane.showMessageDialog(null,"Certo!!!" ,"Alerta",JOptionPane.ERROR_MESSAGE);
+     public void ResetBorder() {
+        btn1.setBorder(bordereset);
+        btn2.setBorder(bordereset);
+        btn3.setBorder(bordereset);
+        btn4.setBorder(bordereset);
+        btn5.setBorder(bordereset);
+        btn6.setBorder(bordereset);
+    
+
+     }
+    
+     public boolean RespostaCerta(String resp) {
+
+        System.out.println("estou aqui");  
+        System.out.println("q.rcerta: "+q.rcerta+"\nq.rcerta2: "+q.rcerta2+"\nresp: "+resp);
+         if (q.rcerta == resp || q.rcerta2 == resp){
+            q.slide++;
+            if (q.slide > 10){
+                q.ronda++;                
+                lblRonda.setText("Ronda: "+q.ronda);
+                q.slide = 1;                
+            }
+
+            lblSlides.setText("Slide "+q.slide+" de 10");
+            ronda();
+            return true;
+         }
          else
-            JOptionPane.showMessageDialog(null,"Errado, a resposta certa seria: "+q.rcerta ,"Alerta",JOptionPane.ERROR_MESSAGE);   
-         q.slide++;
-         if (q.slide > 10)
-             q.slide = 1;
-         lblSlides.setText("Slide "+q.slide+" de 10");
+             return false;             
      }
      
-     
+    public void som(){
+
+
+        if (q.language == 1)
+            idioma="english";
+        else
+            idioma="esperanto";   
+        System.out.println("som1: "+q.rcerta);        
+        String uriString = new File(caminho+cat+idioma+"\\"+q.rcerta+".mp3").toURI().toString();
+        Media pick = new Media(uriString);        
+        MediaPlayer player = new MediaPlayer(pick); 
+        player.play();        
+    }     
     public void distribuir(){
-        String cat;
+
 
         String foto1 = q.registos.get(posicoes[0]);
         String foto2 = q.registos.get(posicoes[1]);
@@ -81,34 +132,30 @@ public class SecondaryMenu extends javax.swing.JFrame {
             foto6 = q.registos2.get(posicoes[5]);            
         }
         
-        //para testar   
-        String caminho = "..\\quiz-cencal3\\src\\media\\"; 
-        
-        //para o jar
-        //String caminho = "..\\src\\media\\"; 
-        System.out.println("foto: "+caminho);
-        
+
+        System.out.println("q.registos2: "+q.registos2);
+       
         if (q.category == 1)
-            cat = "colors";
+            cat = "colors\\";
         else if (q.category == 2)
-            cat = "animals";
+            cat = "animals\\";
         else 
-            cat = "body";            
+            cat = "body\\";            
 
         
-        lbl1.setIcon(new ImageIcon(caminho+cat+"\\"+foto1+".jpg"));
-        lbl2.setIcon(new ImageIcon(caminho+cat+"\\"+foto2+".jpg"));
-        lbl3.setIcon(new ImageIcon(caminho+cat+"\\"+foto3+".jpg"));
-        lbl4.setIcon(new ImageIcon(caminho+cat+"\\"+foto4+".jpg"));
-        lbl5.setIcon(new ImageIcon(caminho+cat+"\\"+foto5+".jpg"));
-        lbl6.setIcon(new ImageIcon(caminho+cat+"\\"+foto6+".jpg"));
+        btn1.setIcon(new ImageIcon(caminho+cat+foto1+".jpg"));
+        btn2.setIcon(new ImageIcon(caminho+cat+foto2+".jpg"));
+        btn3.setIcon(new ImageIcon(caminho+cat+foto3+".jpg"));
+        btn4.setIcon(new ImageIcon(caminho+cat+foto4+".jpg"));
+        btn5.setIcon(new ImageIcon(caminho+cat+foto5+".jpg"));
+        btn6.setIcon(new ImageIcon(caminho+cat+foto6+".jpg"));
 
-        lbl1.setText(foto1);
-        lbl2.setText(foto2);
-        lbl3.setText(foto3);
-        lbl4.setText(foto4);
-        lbl5.setText(foto5);
-        lbl6.setText(foto6);
+        btn1.setText(q.registos.get(posicoes[0]));
+        btn2.setText(q.registos.get(posicoes[1]));
+        btn3.setText(q.registos.get(posicoes[2]));
+        btn4.setText(q.registos.get(posicoes[3]));
+        btn5.setText(q.registos.get(posicoes[4]));
+        btn6.setText(q.registos.get(posicoes[5]));
 /*
 System.out.println("----------- lbl1: "+lbl1.getText());
 System.out.println("----------- lbl2: "+lbl2.getText());
@@ -117,10 +164,12 @@ System.out.println("----------- lbl4: "+lbl4.getText());
 System.out.println("----------- lbl5: "+lbl5.getText());
 System.out.println("----------- lbl6: "+lbl6.getText());
    */     
-System.out.println(caminho+cat+"\\"+foto6+".jpg");
+System.out.println(caminho+cat+foto6+".jpg");
           
         
         q.rcerta = q.registos.get(0);
+        if (q.language == 2)
+            q.rcerta2 = q.registos2.get(0);        
         q.registos.remove(0);
         q.registos.add(q.rcerta);
         System.out.println(q.registos);
@@ -138,18 +187,11 @@ System.out.println(caminho+cat+"\\"+foto6+".jpg");
         
         boolean retorno = liga.pesquisa();
         System.out.println("retorno -"+retorno);
-        
-
-        
+                
         System.out.println(q.registos);
         System.out.println("numero de registos: "+q.registos.size());  
-        posicao();
-        distribuir();
-        lblSlides.setText("Slide "+q.slide+" de 10");
-
-        
-        
-    }
+        ronda();
+     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -159,16 +201,16 @@ System.out.println(caminho+cat+"\\"+foto6+".jpg");
         lblRonda = new javax.swing.JLabel();
         lblSlides = new javax.swing.JLabel();
         btnMenu = new javax.swing.JButton();
-        lbl1 = new javax.swing.JLabel();
-        lbl6 = new javax.swing.JLabel();
-        lbl4 = new javax.swing.JLabel();
-        lbl2 = new javax.swing.JLabel();
-        lbl3 = new javax.swing.JLabel();
-        lbl5 = new javax.swing.JLabel();
+        btn6 = new javax.swing.JButton();
+        btn1 = new javax.swing.JButton();
+        btn2 = new javax.swing.JButton();
+        btn3 = new javax.swing.JButton();
+        btn4 = new javax.swing.JButton();
+        btn5 = new javax.swing.JButton();
+        btnSpeaker = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -181,7 +223,7 @@ System.out.println(caminho+cat+"\\"+foto6+".jpg");
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(32, Short.MAX_VALUE)
+                .addContainerGap(49, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblSlides)
                     .addComponent(lblRonda))
@@ -194,10 +236,8 @@ System.out.println(caminho+cat+"\\"+foto6+".jpg");
                 .addComponent(lblRonda, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(lblSlides, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(259, Short.MAX_VALUE))
+                .addContainerGap(238, Short.MAX_VALUE))
         );
-
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(417, 30, -1, 350));
 
         btnMenu.setText("Menu");
         btnMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -205,61 +245,106 @@ System.out.println(caminho+cat+"\\"+foto6+".jpg");
                 btnMenuActionPerformed(evt);
             }
         });
-        getContentPane().add(btnMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 400, 145, 40));
 
-        lbl1.setIcon(new javax.swing.ImageIcon("C:\\Users\\sfaustino\\Downloads\\ball-red.png")); // NOI18N
-        lbl1.setText("jLabel1");
-        lbl1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lbl1MouseClicked(evt);
+        btn6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn6ActionPerformed(evt);
             }
         });
-        getContentPane().add(lbl1, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 30, 150, 133));
 
-        lbl6.setIcon(new javax.swing.ImageIcon("C:\\Users\\sfaustino\\Downloads\\ball-orange.png")); // NOI18N
-        lbl6.setText("jLabel1");
-        lbl6.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lbl6MouseClicked(evt);
+        btn1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn1ActionPerformed(evt);
             }
         });
-        getContentPane().add(lbl6, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 320, 150, 141));
 
-        lbl4.setIcon(new javax.swing.ImageIcon("C:\\Users\\sfaustino\\Downloads\\ball-green.png")); // NOI18N
-        lbl4.setText("jLabel1");
-        lbl4.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lbl4MouseClicked(evt);
+        btn2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn2ActionPerformed(evt);
             }
         });
-        getContentPane().add(lbl4, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 170, 150, 141));
 
-        lbl2.setIcon(new javax.swing.ImageIcon("C:\\Users\\sfaustino\\Downloads\\ball-blue.png")); // NOI18N
-        lbl2.setText("jLabel1");
-        lbl2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lbl2MouseClicked(evt);
+        btn3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn3ActionPerformed(evt);
             }
         });
-        getContentPane().add(lbl2, new org.netbeans.lib.awtextra.AbsoluteConstraints(214, 30, 150, 133));
 
-        lbl3.setIcon(new javax.swing.ImageIcon("C:\\Users\\sfaustino\\Downloads\\ball-brown.png")); // NOI18N
-        lbl3.setText("jLabel1");
-        lbl3.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lbl3MouseClicked(evt);
+        btn4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn4ActionPerformed(evt);
             }
         });
-        getContentPane().add(lbl3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 150, 141));
 
-        lbl5.setIcon(new javax.swing.ImageIcon("C:\\Users\\sfaustino\\Downloads\\ball-yellow.png")); // NOI18N
-        lbl5.setText("jLabel1");
-        lbl5.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lbl5MouseClicked(evt);
+        btn5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn5ActionPerformed(evt);
             }
         });
-        getContentPane().add(lbl5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, 150, 141));
+
+        btnSpeaker.setIcon(new javax.swing.ImageIcon("C:\\Users\\cistus\\Downloads\\speaker.jpg")); // NOI18N
+        btnSpeaker.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSpeakerActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btn5, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btn6, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btn3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btn4, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btn2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(3, 3, 3)))
+                .addGap(55, 55, 55)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnSpeaker, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(200, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btn2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(36, 36, 36)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btn3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btn6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnSpeaker, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -270,34 +355,65 @@ System.out.println(caminho+cat+"\\"+foto6+".jpg");
         this.setVisible(false);
     }//GEN-LAST:event_btnMenuActionPerformed
 
-    private void lbl1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl1MouseClicked
-        System.out.println("teste de click");
+    private void btn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn1ActionPerformed
+        boolean r = RespostaCerta(btn1.getText());
+        if (r == true){
+            ResetBorder();
 
-        RespostaCerta(lbl1.getText());
-        
-    }//GEN-LAST:event_lbl1MouseClicked
+        }else
+        btn1.setBorder(bordere);
+    }//GEN-LAST:event_btn1ActionPerformed
 
-    private void lbl2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl2MouseClicked
-        RespostaCerta(lbl2.getText());
-    }//GEN-LAST:event_lbl2MouseClicked
+    private void btn6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn6ActionPerformed
+        boolean r = RespostaCerta(btn6.getText());
+        if (r == true){
+            ResetBorder();
+        }
+        else
+        btn6.setBorder(bordere);
+    }//GEN-LAST:event_btn6ActionPerformed
 
-    private void lbl3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl3MouseClicked
-        RespostaCerta(lbl3.getText());
+    private void btn3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn3ActionPerformed
 
-    }//GEN-LAST:event_lbl3MouseClicked
+        boolean r = RespostaCerta(btn3.getText());
+        if (r == true){
+            ResetBorder();
+        }
+        else
+        btn3.setBorder(bordere);
 
-    private void lbl4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl4MouseClicked
-        RespostaCerta(lbl4.getText());
-    }//GEN-LAST:event_lbl4MouseClicked
+    }//GEN-LAST:event_btn3ActionPerformed
 
-    private void lbl5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl5MouseClicked
-        RespostaCerta(lbl5.getText());
+    private void btn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn2ActionPerformed
+        boolean r = RespostaCerta(btn2.getText());
+        if (r == true){
+            ResetBorder();
+        }
+        else
+        btn2.setBorder(bordere);
+    }//GEN-LAST:event_btn2ActionPerformed
 
-    }//GEN-LAST:event_lbl5MouseClicked
+    private void btn4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn4ActionPerformed
+        boolean r = RespostaCerta(btn4.getText());
+        if (r == true){
+            ResetBorder();
+        }
+        else
+        btn4.setBorder(bordere);
+    }//GEN-LAST:event_btn4ActionPerformed
 
-    private void lbl6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl6MouseClicked
-        RespostaCerta(lbl6.getText());
-    }//GEN-LAST:event_lbl6MouseClicked
+    private void btn5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn5ActionPerformed
+        boolean r = RespostaCerta(btn5.getText());
+        if (r == true){
+            ResetBorder();
+        }
+        else
+        btn5.setBorder(bordere);
+    }//GEN-LAST:event_btn5ActionPerformed
+
+    private void btnSpeakerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSpeakerActionPerformed
+        som();   
+    }//GEN-LAST:event_btnSpeakerActionPerformed
 
     /**
      * @param args the command line arguments
@@ -335,14 +451,15 @@ System.out.println(caminho+cat+"\\"+foto6+".jpg");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn1;
+    private javax.swing.JButton btn2;
+    private javax.swing.JButton btn3;
+    private javax.swing.JButton btn4;
+    private javax.swing.JButton btn5;
+    private javax.swing.JButton btn6;
     private javax.swing.JButton btnMenu;
+    private javax.swing.JButton btnSpeaker;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel lbl1;
-    private javax.swing.JLabel lbl2;
-    private javax.swing.JLabel lbl3;
-    private javax.swing.JLabel lbl4;
-    private javax.swing.JLabel lbl5;
-    private javax.swing.JLabel lbl6;
     private javax.swing.JLabel lblRonda;
     private javax.swing.JLabel lblSlides;
     // End of variables declaration//GEN-END:variables
