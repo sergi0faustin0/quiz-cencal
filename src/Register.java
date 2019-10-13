@@ -20,6 +20,7 @@ public class Register extends javax.swing.JFrame {
         
         //q.score = 8;
         lblTotalRonda.setText(q.score+" Pts");
+        txtPlayer.setText(q.player);
     }
 
     /**
@@ -48,7 +49,6 @@ public class Register extends javax.swing.JFrame {
         lblNome.setText("Name:");
 
         txtPlayer.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        txtPlayer.setText("Cristiano Ronaldo");
 
         btnRegistar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnRegistar.setText("Save");
@@ -107,7 +107,8 @@ public class Register extends javax.swing.JFrame {
 
     private void btnRegistarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistarActionPerformed
         LigaBD liga = new LigaBD();
-        boolean retorno = liga.player(txtPlayer.getText(),q.score);
+        q.player=txtPlayer.getText();
+        boolean retorno = liga.player(q.player,q.score);
         q.score=0;
         SecondaryMenu s = new SecondaryMenu();
         s.setVisible(true);

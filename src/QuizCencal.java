@@ -19,6 +19,7 @@ public class QuizCencal {
     public static int score = 0;
     public static int slide = 1;
     public static int ronda = 1;
+    public static String player = "";
     public static String rcerta = "";
     public static String rcerta2 = "";
     public static String resposta = "";
