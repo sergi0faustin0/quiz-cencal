@@ -90,8 +90,8 @@ public class SecondaryMenu extends javax.swing.JFrame {
             if (q.slide > 10){
                 timeElapsed = (int)Math.round((System.currentTimeMillis()-start)/100);
                 System.out.println("timeElapsed: "+timeElapsed);
-                if (timeElapsed < 21)
-                    q.score=q.score+20-timeElapsed;
+                if (timeElapsed < 31)
+                    q.score=q.score+30-timeElapsed;
                     
                 //JOptionPane.showMessageDialog(null,"Total desta Ronda: "+q.score+" Pts","Alerta",JOptionPane.INFORMATION_MESSAGE);
                 q.ronda++;                
@@ -100,13 +100,15 @@ public class SecondaryMenu extends javax.swing.JFrame {
                 Register r = new Register();
                 r.setVisible(true);
                 this.setVisible(false);  
+            } else {
+                ronda();
             }
             top5();
             lblSlides.setText("Slide "+q.slide+" de 10");
   
             lblScore.setText("Score: "+q.score+" Pts");
             start = System.currentTimeMillis();
-            ronda();
+            
             return true;
          }
          else{
@@ -215,6 +217,9 @@ public class SecondaryMenu extends javax.swing.JFrame {
         this.setSize(700,540);
         this.setLocationRelativeTo(null);
         this.getContentPane().setBackground( Color.white );
+        btnSpeaker.setBackground( Color.white );
+        btnMenu.setBackground( Color.white );
+        jPanel1.setBackground( Color.white );
 
         //boolean retorno = liga.pesquisa();
         ronda();
@@ -244,16 +249,20 @@ public class SecondaryMenu extends javax.swing.JFrame {
         btnSpeaker = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Aprender a Jogar");
         setBackground(new java.awt.Color(255, 255, 255));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        lblRonda.setFont(new java.awt.Font("Kristen ITC", 1, 14)); // NOI18N
         lblRonda.setText("Ronda 1");
 
+        lblSlides.setFont(new java.awt.Font("Kristen ITC", 1, 18)); // NOI18N
         lblSlides.setText("Slide 1 de 10");
 
+        lblScore.setFont(new java.awt.Font("Kristen ITC", 1, 24)); // NOI18N
         lblScore.setText("Score");
 
         lbltop1.setText("11 pts -> Luna");
@@ -273,22 +282,24 @@ public class SecondaryMenu extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(87, 87, 87)
-                        .addComponent(lblSlides))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(96, 96, 96)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblScore)
-                            .addComponent(lblRonda)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(40, 40, 40)
+                        .addGap(38, 38, 38)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbltop5)
                             .addComponent(lbltop2)
                             .addComponent(lbltop1)
                             .addComponent(lbltop3)
-                            .addComponent(lbltop4))))
-                .addContainerGap(82, Short.MAX_VALUE))
+                            .addComponent(lbltop4)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(87, 87, 87)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblScore)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(lblRonda))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(69, 69, 69)
+                        .addComponent(lblSlides)))
+                .addContainerGap(79, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -299,7 +310,7 @@ public class SecondaryMenu extends javax.swing.JFrame {
                 .addComponent(lblRonda, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblSlides, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(29, 29, 29)
                 .addComponent(lbltop1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lbltop2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -309,10 +320,10 @@ public class SecondaryMenu extends javax.swing.JFrame {
                 .addComponent(lbltop4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lbltop5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42))
+                .addGap(19, 19, 19))
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 30, -1, -1));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 30, 270, -1));
 
         btnMenu.setText("Menu");
         btnMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -322,13 +333,15 @@ public class SecondaryMenu extends javax.swing.JFrame {
         });
         getContentPane().add(btnMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 390, 110, 70));
 
+        btn6.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
         btn6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn6ActionPerformed(evt);
             }
         });
-        getContentPane().add(btn6, new org.netbeans.lib.awtextra.AbsoluteConstraints(205, 328, 140, 140));
+        getContentPane().add(btn6, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 330, 140, 140));
 
+        btn1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         btn1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn1ActionPerformed(evt);
@@ -336,6 +349,7 @@ public class SecondaryMenu extends javax.swing.JFrame {
         });
         getContentPane().add(btn1, new org.netbeans.lib.awtextra.AbsoluteConstraints(44, 30, 140, 140));
 
+        btn2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         btn2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn2ActionPerformed(evt);
@@ -343,6 +357,7 @@ public class SecondaryMenu extends javax.swing.JFrame {
         });
         getContentPane().add(btn2, new org.netbeans.lib.awtextra.AbsoluteConstraints(202, 30, 140, 140));
 
+        btn3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         btn3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn3ActionPerformed(evt);
@@ -350,6 +365,7 @@ public class SecondaryMenu extends javax.swing.JFrame {
         });
         getContentPane().add(btn3, new org.netbeans.lib.awtextra.AbsoluteConstraints(44, 176, 140, 140));
 
+        btn4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         btn4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn4ActionPerformed(evt);
@@ -357,6 +373,7 @@ public class SecondaryMenu extends javax.swing.JFrame {
         });
         getContentPane().add(btn4, new org.netbeans.lib.awtextra.AbsoluteConstraints(202, 176, 140, 140));
 
+        btn5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         btn5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn5ActionPerformed(evt);

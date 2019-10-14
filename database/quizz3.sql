@@ -200,7 +200,7 @@ INSERT INTO `dici` (`id`, `esperanto`, `ingles`, `categoryId`) VALUES
 -- Índices para tabelas despejadas
 --
 
---
+----/////////////////////////////
 -- Índices para tabela `dici`
 --
 ALTER TABLE `dici`
@@ -208,7 +208,7 @@ ALTER TABLE `dici`
   ADD UNIQUE KEY `UniqueThreeKey` (`categoryId`,`esperanto`,`ingles`),
   ADD KEY `category` (`categoryId`);
 
---
+--/////////////////////////////
 -- AUTO_INCREMENT de tabelas despejadas
 --
 

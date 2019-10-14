@@ -21,6 +21,11 @@ public class MainMenu extends javax.swing.JFrame {
         initComponents();
         this.setSize(700,540);
         this.setLocationRelativeTo(null);
+        this.getContentPane().setBackground( Color.white );
+        cbxLanguages.setBackground( Color.white );
+        cbxCategories.setBackground( Color.white );
+        btnNext.setBackground( Color.white );
+        jLabel1.setBackground( Color.white );
     }
 
     /**
@@ -38,6 +43,7 @@ public class MainMenu extends javax.swing.JFrame {
         cbxCategories = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Quiz Time!");
         setResizable(false);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/quiz-time.png"))); // NOI18N
