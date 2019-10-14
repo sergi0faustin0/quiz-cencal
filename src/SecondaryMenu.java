@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -23,7 +25,10 @@ import javax.swing.border.Border;
 
 public class SecondaryMenu extends javax.swing.JFrame {
         long start = System.currentTimeMillis();
+       // System.out.println(System.currentTimeMillis());
         int timeElapsed;
+        
+        
         
         LigaBD liga = new LigaBD();
         int[] posicoes = { 0, 1, 2, 3, 4, 5 };
@@ -35,8 +40,8 @@ public class SecondaryMenu extends javax.swing.JFrame {
         Border bordereset = BorderFactory.createLineBorder(Color.GRAY, 0); 
         
         //caminho para testar   
-        String caminho = "..\\quiz-cencal\\src\\media\\";         
-        
+      //  String caminho = "..\\quiz-cencal\\src\\media\\";         
+        String caminho = "..\\quiz-cencal\\src\\media\\";     
         //define Categoria
         String cat; 
         
@@ -47,9 +52,11 @@ public class SecondaryMenu extends javax.swing.JFrame {
         final JFXPanel fxPanel = new JFXPanel();
         
     public void ronda(){
+        
         baralhaArray(posicoes);
         distribuir();
         lblSlides.setText("Slide "+q.slide+" de 10");
+         
         som();              
     }
     
@@ -88,14 +95,15 @@ public class SecondaryMenu extends javax.swing.JFrame {
                 q.score=q.score+1;
             q.errada = false;  
             if (q.slide > 10){
-                timeElapsed = (int)Math.round((System.currentTimeMillis()-start)/100);
-                System.out.println("timeElapsed: "+timeElapsed);
+                timeElapsed = (int)(System.currentTimeMillis()-start)/60;
+                System.out.println(start+"\ntimeElapsed: "+timeElapsed);
                 if (timeElapsed < 31)
                     q.score=q.score+30-timeElapsed;
                     
                 //JOptionPane.showMessageDialog(null,"Total desta Ronda: "+q.score+" Pts","Alerta",JOptionPane.INFORMATION_MESSAGE);
                 q.ronda++;                
                 lblRonda.setText("Ronda: "+q.ronda);
+                System.out.println("Ronda: "+q.ronda+"\nlblRonda: "+lblRonda.getText());
                 q.slide = 1;  
                 Register r = new Register();
                 r.setVisible(true);
@@ -118,16 +126,21 @@ public class SecondaryMenu extends javax.swing.JFrame {
      }
      
     public void som(){
+           
         if (q.language == 1)
             idioma="english";
         else
             idioma="esperanto";   
+
         String path = caminho+cat+idioma+"\\"+q.rcerta+".mp3";
         //System.out.println("audio path: "+path); 
         String uriString = new File(path).toURI().toString();
         Media pick = new Media(uriString);        
         MediaPlayer player = new MediaPlayer(pick); 
-        player.play();        
+        
+        player.play();     
+        
+        
     }     
     
     public void distribuir(){
@@ -213,6 +226,7 @@ public class SecondaryMenu extends javax.swing.JFrame {
     }    
     
     public SecondaryMenu() {
+        
         initComponents();
         this.setSize(700,540);
         this.setLocationRelativeTo(null);
@@ -220,10 +234,18 @@ public class SecondaryMenu extends javax.swing.JFrame {
         btnSpeaker.setBackground( Color.white );
         btnMenu.setBackground( Color.white );
         jPanel1.setBackground( Color.white );
-
+        lblRonda.setText("Ronda: "+q.ronda);
         //boolean retorno = liga.pesquisa();
+       top5();
+       
+       // top5();
+       try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(SecondaryMenu.class.getName()).log(Level.SEVERE, null, ex);
+            }
         ronda();
-        top5();
+        //som();
      }
 
     @SuppressWarnings("unchecked")
@@ -255,83 +277,45 @@ public class SecondaryMenu extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblRonda.setFont(new java.awt.Font("Kristen ITC", 1, 14)); // NOI18N
-        lblRonda.setText("Ronda 1");
+        lblRonda.setText("teste");
+        jPanel1.add(lblRonda, new org.netbeans.lib.awtextra.AbsoluteConstraints(98, 56, -1, 30));
 
         lblSlides.setFont(new java.awt.Font("Kristen ITC", 1, 18)); // NOI18N
         lblSlides.setText("Slide 1 de 10");
+        jPanel1.add(lblSlides, new org.netbeans.lib.awtextra.AbsoluteConstraints(77, 92, -1, 30));
 
         lblScore.setFont(new java.awt.Font("Kristen ITC", 1, 24)); // NOI18N
         lblScore.setText("Score");
+        jPanel1.add(lblScore, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 20, -1, 30));
 
         lbltop1.setText("11 pts -> Luna");
+        jPanel1.add(lbltop1, new org.netbeans.lib.awtextra.AbsoluteConstraints(94, 140, -1, 30));
 
         lbltop2.setText("11 pts -> Luna");
+        jPanel1.add(lbltop2, new org.netbeans.lib.awtextra.AbsoluteConstraints(94, 176, -1, 30));
 
         lbltop3.setText("11 pts -> Luna");
+        jPanel1.add(lbltop3, new org.netbeans.lib.awtextra.AbsoluteConstraints(94, 212, -1, 30));
 
         lbltop4.setText("11 pts -> Luna");
+        jPanel1.add(lbltop4, new org.netbeans.lib.awtextra.AbsoluteConstraints(94, 248, -1, 30));
 
         lbltop5.setText("11 pts -> Luna");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbltop5)
-                            .addComponent(lbltop2)
-                            .addComponent(lbltop1)
-                            .addComponent(lbltop3)
-                            .addComponent(lbltop4)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(87, 87, 87)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblScore)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(lblRonda))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(69, 69, 69)
-                        .addComponent(lblSlides)))
-                .addContainerGap(79, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblScore, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblRonda, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblSlides, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
-                .addComponent(lbltop1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbltop2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbltop3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbltop4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lbltop5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(19, 19, 19))
-        );
+        jPanel1.add(lbltop5, new org.netbeans.lib.awtextra.AbsoluteConstraints(94, 284, -1, 30));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 30, 270, -1));
 
+        btnMenu.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnMenu.setText("Menu");
         btnMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnMenuActionPerformed(evt);
             }
         });
-        getContentPane().add(btnMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 390, 110, 70));
+        getContentPane().add(btnMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 390, 110, 70));
 
         btn6.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
         btn6.addActionListener(new java.awt.event.ActionListener() {
@@ -339,7 +323,7 @@ public class SecondaryMenu extends javax.swing.JFrame {
                 btn6ActionPerformed(evt);
             }
         });
-        getContentPane().add(btn6, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 330, 140, 140));
+        getContentPane().add(btn6, new org.netbeans.lib.awtextra.AbsoluteConstraints(202, 328, 140, 140));
 
         btn1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         btn1.addActionListener(new java.awt.event.ActionListener() {
@@ -379,7 +363,7 @@ public class SecondaryMenu extends javax.swing.JFrame {
                 btn5ActionPerformed(evt);
             }
         });
-        getContentPane().add(btn5, new org.netbeans.lib.awtextra.AbsoluteConstraints(47, 328, 140, 140));
+        getContentPane().add(btn5, new org.netbeans.lib.awtextra.AbsoluteConstraints(44, 328, 140, 140));
 
         btnSpeaker.setForeground(new java.awt.Color(255, 255, 255));
         btnSpeaker.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speaker.jpg"))); // NOI18N
@@ -388,7 +372,7 @@ public class SecondaryMenu extends javax.swing.JFrame {
                 btnSpeakerActionPerformed(evt);
             }
         });
-        getContentPane().add(btnSpeaker, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 390, 110, 70));
+        getContentPane().add(btnSpeaker, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 390, 110, 70));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

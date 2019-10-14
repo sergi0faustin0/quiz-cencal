@@ -106,14 +106,14 @@ public class Register extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegistarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistarActionPerformed
+       
         LigaBD liga = new LigaBD();
         q.player=txtPlayer.getText();
         boolean retorno = liga.player(q.player,q.score);
         q.score=0;
         SecondaryMenu s = new SecondaryMenu();
         s.setVisible(true);
-        this.setVisible(false);          
-        
+        this.dispose();
     }//GEN-LAST:event_btnRegistarActionPerformed
 
     /**

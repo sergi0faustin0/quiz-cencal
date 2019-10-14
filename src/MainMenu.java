@@ -95,6 +95,9 @@ public class MainMenu extends javax.swing.JFrame {
 
         QuizCencal q = new QuizCencal();
         
+        q.ronda = 1;
+        q.slide = 1;
+        q.score = 0;
         q.registos.clear();
         q.registos2.clear();
         q.category = cbxCategories.getSelectedIndex();

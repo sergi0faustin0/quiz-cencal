@@ -102,7 +102,7 @@ public class LigaBD {
             while(rs.next()){
                 //System.out.println("entrou no while!\n");
                 if (!rs.getString("name").equals("")){
-                    q.top5.add(rs.getString("score")+" -> "+rs.getString("name"));
+                    q.top5.add(rs.getString("name")+": "+rs.getString("score")+" pontos");
                     //System.out.println("q.top: "+q.top); 
                 }  
             
