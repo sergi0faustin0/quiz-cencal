@@ -214,6 +214,7 @@ public class SecondaryMenu extends javax.swing.JFrame {
         initComponents();
         this.setSize(700,540);
         this.setLocationRelativeTo(null);
+        this.getContentPane().setBackground( Color.white );
 
         //boolean retorno = liga.pesquisa();
         ronda();
@@ -319,7 +320,7 @@ public class SecondaryMenu extends javax.swing.JFrame {
                 btnMenuActionPerformed(evt);
             }
         });
-        getContentPane().add(btnMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(481, 395, 132, 73));
+        getContentPane().add(btnMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 390, 110, 70));
 
         btn6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -363,13 +364,14 @@ public class SecondaryMenu extends javax.swing.JFrame {
         });
         getContentPane().add(btn5, new org.netbeans.lib.awtextra.AbsoluteConstraints(47, 328, 140, 140));
 
-        btnSpeaker.setIcon(new javax.swing.ImageIcon("C:\\Users\\cistus\\Downloads\\speaker.jpg")); // NOI18N
+        btnSpeaker.setForeground(new java.awt.Color(255, 255, 255));
+        btnSpeaker.setIcon(new javax.swing.ImageIcon(getClass().getResource("/speaker.jpg"))); // NOI18N
         btnSpeaker.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSpeakerActionPerformed(evt);
             }
         });
-        getContentPane().add(btnSpeaker, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 395, 71, -1));
+        getContentPane().add(btnSpeaker, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 390, 110, 70));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
